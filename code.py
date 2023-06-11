@@ -1,0 +1,86 @@
+import spacy
+!pip install PyPDF2
+from spacy import displacy
+!python -m spacy download en_core_web_trf
+!pip install pathlib
+import json
+import pandas as pd
+import numpy as np
+from google.colab import files
+uploaded = files.upload()
+list_of_org = []
+NER = spacy.load(en_core_web_trf)
+from PyPDF2 import PdfReader
+Name = []
+Authors = [] 
+Institution = []
+Companies = []
+def foo(x)
+    reader = PdfReader(x)
+    f = open('comp-list.json')
+    authors_data = json.load(f)
+    f.close()
+    number_of_pages = len(reader.pages)
+    text = 
+    for i in range(0 , number_of_pages)
+        text += reader.pages[i].extract_text()
+    text = text.replace(n ,  )
+    text1= NER(text)
+    authors = []
+    for word in text1.ents 
+      if word.label_ == PERSON 
+        authors.append(word.text)
+    Authors.append(authors) 
+
+    list_of_org = []
+    for word in text1.ents 
+      if word.label_ == ORG 
+        list_of_org.append(word.text)
+    list_of_org = [n.replace(n , ) for n in list_of_org]
+    list_of_org = [n.replace(. , ) for n in list_of_org]
+    list_of_org = [n.lower() for n in list_of_org]
+    authors_data = [n.lower() for n in authors_data]
+
+    list = [] 
+    for comp in list_of_org  
+      if(comp in (authors_data))
+        if comp in list  
+          continue
+        else 
+          list.append(comp)
+    Institution.append(list)
+    stopwords = [ltd , limited , merged]
+    def clean_stopword(txt)
+      temp_list = txt.split( )
+      temp_list = [i.strip() for i in temp_list]
+      temp_list = [i for i in temp_list if i not in stopwords] 
+      return  .join(temp_list)
+    list_of_org = [clean_stopword(n).strip() for n in list_of_org]
+    authors_data = [clean_stopword(n).strip() for n in authors_data]
+    df = pd.read_csv(bse_companies.csv , encoding = 'latin-1')
+    df[Company Name] = df[Company Name].astype(str)
+    bse_data = df[Company Name].values.tolist()
+    bse_data = [n.replace(n , ) for n in bse_data]
+    bse_data = [n.replace(. , ) for n in bse_data]
+    bse_data = [n.lower() for n in bse_data]
+    bse_data = [n.replace(( ,) for n in bse_data]
+    bse_data = [n.replace() ,) for n in bse_data]
+    bse_data = [clean_stopword(n).strip() for n in bse_data]
+    lst = []
+    for i in list_of_org
+      if i in bse_data  
+        if i in lst  
+          continue
+        else  
+          lst.append(i) 
+    Companies.append(lst)
+from pathlib import Path
+pdf_files = Path(.).glob(.pdf)
+for pdf in pdf_files
+    Name.append(pdf)
+    foo(pdf)
+df = pd.DataFrame({'name of the file' Name,
+                   'author names' Authors,
+                   'author institution' Institution,
+                   'companies mentioned' Companies})
+df.to_csv('out.csv')
